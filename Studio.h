@@ -28,6 +28,8 @@ public:
     void clear();
     Studio(const Studio& other);
     void operator=(const Studio& other);
+    BaseAction* buildAction(char* command);
+    Customer* buildCustomer(char* command);
     Studio(Studio&& other);
     Studio& operator=(Studio &&other);
 

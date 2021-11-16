@@ -12,9 +12,11 @@ Studio::Studio()
 
 }
 
-Studio::Studio(const std::string& configFilePath) {
+Studio::Studio(const std::string& configFilePath)
+{
     open = true;
     std::ifstream myfile(configFilePath);
+    //std::ifstream myfile("ExmapleInput.txt");
     std::string line;
     std::vector<std::string> myInputs;
 
@@ -109,6 +111,46 @@ Studio::Studio(const std::string& configFilePath) {
 void Studio::start()
 {
     std::cout << "Studio is now open!" << std::endl;
+    while(this->open){
+        char command[500];
+        std::cin.getline(command,500);
+        BaseAction* act=buildAction(command);
+        act->act(*this);
+    }
+}
+BaseAction* Studio::buildAction(char* command){
+    std::string action;
+    int j=0;
+    while(command[j] != ' '){
+        action=action+command[j];
+        j++;
+    }
+    j++;
+    for (int i=0; i<j ; ++i)
+        command[i] = command[j+i];
+    BaseAction* a;
+    if(action=="open"){
+       char id =command[0];
+    }
+    a=new Order(2);
+    return a;
+}
+Customer* Studio:: buildCustomer(char* command){
+    char *type;
+    type = strtok (command,",");
+    Customer *c;
+    if(type=="swt"){
+        c=new SweatyCustomer(command,0);
+    }
+    else if(type=="chp"){
+        c=new CheapCustomer(command,0);
+    }
+    else if(type=="mcl"){
+        c=new HeavyMuscleCustomer(command,0);
+    }
+    else
+        c=new FullBodyCustomer(command,0);
+    return c;
 }
 
 int Studio::getNumOfTrainers() const
@@ -143,8 +185,11 @@ void Studio::closeStudio()
 
 Studio::~Studio()
 {
-    clear();
+    for (int i = 0; i < trainers.size(); i++)
+        delete trainers[i];
 
+    for (int i = 0; i < actionsLog.size(); i++)
+        delete actionsLog[i];
 }
 
 Studio::Studio(const Studio& other):open(other.open)
@@ -186,34 +231,4 @@ void Studio::operator=(const Studio& other)
 
     }
 }
-
-Studio::Studio(Studio &&other):open(other.open), trainers(other.trainers), workout_options(other.workout_options),
-                               actionsLog(other.actionsLog) {
-    other.trainers.clear();
-    other.workout_options.clear();
-    other.actionsLog.clear();
-
-}
-
-Studio &Studio::operator=(Studio &&other) {
-
-    if(this!=&other){
-        clear();
-        open=other.open;
-        workout_options=other.workout_options;
-        trainers=other.trainers;
-        actionsLog=other.actionsLog;
-    }
-    return *this;
-}
-
-void Studio::clear() {
-    for (int i = 0; i < trainers.size(); i++)
-        delete trainers[i];
-
-    for (int i = 0; i < actionsLog.size(); i++)
-        delete actionsLog[i];
-}
-
-
 
