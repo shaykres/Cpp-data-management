@@ -28,9 +28,12 @@ public:
     int getId();
     void setId(int Id);
     ~Trainer();
+    void clear();
     Trainer(const Trainer& other);
     void operator=(const Trainer& other);
     Trainer* clone();
+    Trainer(Trainer&& other);
+    Trainer& operator=(Trainer &&other);
 private:
     int id;
     int capacity;
