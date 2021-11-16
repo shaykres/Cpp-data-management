@@ -25,7 +25,10 @@ public:
     ~Studio();
     Studio(const Studio& other);
     void operator=(const Studio& other);
+    BaseAction* buildAction(char* command);
+    Customer* buildCustomer(char* command);
 private:
+    int id;
     bool open;
     std::vector<Trainer*> trainers;
     std::vector<Workout> workout_options;
