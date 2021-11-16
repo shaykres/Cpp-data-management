@@ -121,73 +121,131 @@ void Studio::start()
 }
 BaseAction* Studio::buildAction(char* command){
     std::string action;
-    BaseAction* a;
     int j=0;
     while(j<strlen(command)&&command[j] != ' '){
         action=action+command[j];
         j++;
     }
     j++;
-    for (int i=0; i<j ; ++i)
+    for (int i=0; i<strlen(command)-j ; ++i)
         command[i] = command[j+i];
-    if(action=="open"){
-       int id =std::stoi(command);
-       std::cout << id << std::endl;
+    //
+    command[strlen(command)-j-1]='\0';
+    //std::cout << action << std::endl;
+    //std::cout << command << std::endl;
+
+
+
+    BaseAction* a;
+    switch (hashit(action)) {
+        case string_code::open:{
+            std::string idt;
+            std::vector<Customer *> customers;
+            int j=0;
+            while (command[j] != ' ') {
+                idt = idt + command[j];
+                j++;
+            }
+            j++;
+            for (int i=0; i<strlen(command)-j ; ++i)
+                command[i] = command[j+i];
+            int trainerid = std::stoi(idt);
+
+            int indexCommand = 0;
+
+            //std::cout << command << std::endl;
+            int len=strlen(command);
+
+            while (indexCommand < len) {
+                std::string myCoustomer;
+                while (command[indexCommand] != ' '&&indexCommand<len) {
+                    myCoustomer = myCoustomer + command[indexCommand];
+                    indexCommand++;
+                }
+                indexCommand++;
+               // std::cout << command << std::endl;
+               // std::cout << myCoustomer << std::endl;
+                len=len-indexCommand;
+                for (int i = 0; i < len; ++i)
+                    command[i] = command[indexCommand + i];
+                command[len-1]='\0';
+                indexCommand=0;
+                customers.push_back(buildCustomer(myCoustomer));
+            }
+//            for(int i=0; i<customers.size(); i++){
+//                std::cout << customers[i]->getId() << "," << customers[i]->getName()<< std::endl;
+//            }
+            a=new OpenTrainer(trainerid,customers);
+
+            break;
+        }
+        case string_code::order:
+            break;
+        case string_code::close:
+            break;
+        default:
+            ;
+//            if(action=="order"){
+//                int id =std::stoi(command);
+//                a=new Order(id);
+//            }
+//            if(action=="move"){
+//                int idsrc =std::stoi(command);
+//                for (int i=0; i<3 ; ++i)
+//                    command[i] = command[i+2];
+//                int iddst=std::stoi(command);
+//                for (int i=0; i<3 ; ++i)
+//                    command[i] = command[i+2];
+//                int cid=std::stoi(command);
+//                a=new MoveCustomer(idsrc,iddst,cid);
+//            }
+//            if(action=="close"){
+//                int id =std::stoi(command);
+//                a=new Close(id);
+//            }
+//            if(action=="closeall"){
+//                a=new CloseAll();
+//            }
+//            if(action=="workout_option"){
+//                a=new PrintWorkoutOptions();
+//            }
+//            if(action=="status"){
+//                int id =std::stoi(command);
+//                a=new PrintTrainerStatus(id);
+//            }
+//            if(action=="log"){
+//                a=new PrintActionsLog();
+//            }
+//            if(action=="backup"){
+//                a=new BackupStudio();
+//            }
+//            if (action=="restore"){
+//                a=new RestoreStudio();
+//            }
     }
-    if(action=="order"){
-        int id =std::stoi(command);
-        a=new Order(id);
-    }
-    if(action=="move"){
-        int idsrc =std::stoi(command);
-        for (int i=0; i<3 ; ++i)
-            command[i] = command[i+2];
-        int iddst=std::stoi(command);
-        for (int i=0; i<3 ; ++i)
-            command[i] = command[i+2];
-        int cid=std::stoi(command);
-        a=new MoveCustomer(idsrc,iddst,cid);
-    }
-    if(action=="close"){
-        int id =std::stoi(command);
-        a=new Close(id);
-    }
-    if(action=="closeall"){
-        a=new CloseAll();
-    }
-    if(action=="workout_option"){
-        a=new PrintWorkoutOptions();
-    }
-    if(action=="status"){
-        int id =std::stoi(command);
-        a=new PrintTrainerStatus(id);
-    }
-    if(action=="log"){
-        a=new PrintActionsLog();
-    }
-    if(action=="backup"){
-        a=new BackupStudio();
-    }
-    if (action=="restore"){
-        a=new RestoreStudio();
-    }
+    a=new Order(2);
     return a;
 }
-Customer* Studio:: buildCustomer(char* command){
-    char *type;
-    type = strtok (command,",");
+
+Customer* Studio:: buildCustomer(std::string myCoustomer){
+    std::string type;
+    std::string CustomerName;
+    int comma=myCoustomer.find(",");
+    CustomerName=myCoustomer.substr(0,comma);
+    type=myCoustomer.substr(comma+1,myCoustomer.size());
+
     Customer *c;
-    if(type=="swt"){
-        c=new SweatyCustomer(command,0);
+    if(std::equal(type.begin(), type.end(), "swt")){
+        c=new SweatyCustomer(CustomerName,create_id());
     }
-    else if(type=="chp"){
-        c=new CheapCustomer(command,0);
+    else if(std::equal(type.begin(), type.end(), "chp")){
+        c=new CheapCustomer(CustomerName,create_id());
     }
-    else if(type=="mcl"){
-        c=new HeavyMuscleCustomer(command,0);
+    else if(std::equal(type.begin(), type.end(), "mcl")){
+        c=new HeavyMuscleCustomer(CustomerName,create_id());
     }
     else
-        c=new FullBodyCustomer(command,0);
+        c=new FullBodyCustomer(CustomerName ,create_id());
     return c;
 }
 
@@ -268,5 +326,17 @@ void Studio::operator=(const Studio& other)
             actionsLog.push_back(other.actionsLog[i]->clone());
 
     }
+}
+
+string_code Studio::hashit(const std::string &inString) {
+    if (inString == "open") return string_code::open;
+    if (inString == "order") return string_code::order;
+    //if(inString == "move") return string_code::;
+}
+
+int Studio::create_id() {
+    static std::atomic<int> id{-1};
+    return id.fetch_add(1, std::memory_order_relaxed) + 1;
+
 }
 
