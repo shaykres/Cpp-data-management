@@ -47,9 +47,7 @@ OpenTrainer::OpenTrainer(int id, std::vector<Customer*>& customersList):trainerI
 void OpenTrainer::act(Studio& studio)
 {
     Trainer* t = studio.getTrainer(trainerId);
-
-
-    if (t == nullptr|| t->isOpen()||customers.size()>t->getCapacity()){
+    if (t == nullptr|| t->isOpen()){
         error( "Workout session does not exist or is already open");
     }
     else {
@@ -111,6 +109,7 @@ void Order::act(Studio& studio)
         for (int i = 0; i < trainerCustomerl.size(); i++)
             t->order(trainerCustomerl[i]->getId(), trainerCustomerl[i]->order(workout_options), workout_options);
         complete();
+        t->updateSalary();
     }
 
 }
@@ -152,10 +151,8 @@ void MoveCustomer::act(Studio& studio)
         tsrc->removeCustomer(id);
         if (tsrc->getCustomers().size() == 0)
             tsrc->closeTrainer();
-
         tdst->addCustomer(c);
         tdst->addCustomerOrders(orderList);
-        //tdst->order(id, c->order(studio.getWorkoutOptions()), studio.getWorkoutOptions());
         complete();
     }
 }
