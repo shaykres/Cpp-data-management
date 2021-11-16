@@ -4,6 +4,7 @@
 #include "Customer.h"
 #include <algorithm>
 #include <string>
+#include <iostream>
 
 
 Customer::Customer(std::string c_name, int c_id) : id(c_id), name(c_name)
@@ -108,20 +109,15 @@ HeavyMuscleCustomer::HeavyMuscleCustomer(std::string name, int id) :Customer(nam
 std::vector<int> HeavyMuscleCustomer::order(const std::vector<Workout>& workout_options)
 {
     std::vector<int> myWorkout;
-    myWorkout[0]=1;
     std::vector<Workout> workout;
     for (int i = 0; i < workout_options.size(); i++) {
         if (workout_options[i].getType() == WorkoutType::ANAEROBIC)
             workout.push_back(workout_options[i]);
     }
 
-//   struct ExpensiveWorkout
-//    {
-//        inline bool operator() (const Workout& workout1, const Workout& workout2)
-//        {
-//            return (workout1.getPrice() < workout2.getPrice());
-//        }
-//    };
+//    for(int i=0; i<workout.size(); i++){
+//        std::cout << workout[i].getType() << std::endl;
+//    }
 
     std::sort(workout.begin(), workout.end());
     while( workout.size()>0) {
@@ -186,7 +182,7 @@ std::vector<int> FullBodyCustomer::order(const std::vector<Workout>& workout_opt
         int minpriceA = AnaerobicWorkout[0].getPrice();
         int idminA = AnaerobicWorkout[0].getId();
         for (int i = 1; i < AnaerobicWorkout.size(); i++) {
-            if ((minpriceA < AnaerobicWorkout[i].getPrice()) || ((minpriceA == AnaerobicWorkout[i].getPrice()) && (idminA > AnaerobicWorkout[i].getId()))) {
+            if ((minpriceA > AnaerobicWorkout[i].getPrice()) || ((minpriceA == AnaerobicWorkout[i].getPrice()) && (idminA > AnaerobicWorkout[i].getId()))) {
                 minpriceA = AnaerobicWorkout[i].getPrice();
                 idminA = AnaerobicWorkout[i].getId();
             }

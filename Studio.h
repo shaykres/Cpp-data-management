@@ -16,8 +16,13 @@ enum string_code {
     open,
     order,
     close,
-    closeAll,
-
+    closeall,
+    move,
+    workout_options,
+    status,
+    mylog,
+    mybackup,
+    restore
 };
 
 class Studio{

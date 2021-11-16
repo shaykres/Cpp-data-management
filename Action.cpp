@@ -47,7 +47,9 @@ OpenTrainer::OpenTrainer(int id, std::vector<Customer*>& customersList):trainerI
 void OpenTrainer::act(Studio& studio)
 {
     Trainer* t = studio.getTrainer(trainerId);
-    if (t == nullptr|| t->isOpen()||customers.size()<=t->getCapacity()){
+
+
+    if (t == nullptr|| t->isOpen()||customers.size()>t->getCapacity()){
         error( "Workout session does not exist or is already open");
     }
     else {
@@ -104,7 +106,6 @@ void Order::act(Studio& studio)
         error("Trainer does not exist or is not open");
     }
     else {
-        std::cout << "order "<< trainerId<< std::endl;
         std::vector<Customer*> trainerCustomerl = t->getCustomers();
         std::vector<Workout> workout_options = studio.getWorkoutOptions();
         for (int i = 0; i < trainerCustomerl.size(); i++)
@@ -147,11 +148,14 @@ void MoveCustomer::act(Studio& studio)
         error("Cannot move customer");
     else {
         Customer* c = tsrc->getCustomer(id);
+        std::vector<OrderPair> orderList=tsrc->getCustomerOrder(id);
         tsrc->removeCustomer(id);
         if (tsrc->getCustomers().size() == 0)
             tsrc->closeTrainer();
+
         tdst->addCustomer(c);
-        tdst->order(id, c->order(studio.getWorkoutOptions()), studio.getWorkoutOptions());
+        tdst->addCustomerOrders(orderList);
+        //tdst->order(id, c->order(studio.getWorkoutOptions()), studio.getWorkoutOptions());
         complete();
     }
 }
@@ -216,15 +220,17 @@ Close::Close(const Close& other):BaseAction(other), trainerId(other.trainerId)
 
 CloseAll::CloseAll()
 {
+
 }
 
 void CloseAll::act(Studio& studio)
 {
-
+    std::cout << "S" << std::endl;
     for (int i = 0; i < studio.getNumOfTrainers(); i++) {
+        std::cout << "S" << std::endl;
         if (studio.getTrainer(i)->isOpen()) {
-            Close close(i);
-            close.act(studio);
+            BaseAction* close=new Close(i);
+            close->act(studio);
         }
     }
     studio.closeStudio();

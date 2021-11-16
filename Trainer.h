@@ -34,12 +34,15 @@ public:
     Trainer* clone();
     Trainer(Trainer&& other);
     Trainer& operator=(Trainer &&other);
+    std::vector<OrderPair> getCustomerOrder(int Customerid);
+    void addCustomerOrders(std::vector<OrderPair> CustomerOrders);
 private:
     int id;
     int capacity;
     bool open;
     std::vector<Customer*> customersList;
     std::vector<OrderPair> orderList; //A list of pairs for each order for the trainer - (customer_id, Workout)
+    int salary;
 };
 
 #endif //SPL_HW1_TRAINER_H
