@@ -19,7 +19,7 @@ public:
     void start();
     int getNumOfTrainers() const;
     Trainer* getTrainer(int tid);
-    //const std::vector<BaseAction*>& getActionsLog() const; // Return a reference to the history of actions
+    const std::vector<BaseAction*>& getActionsLog() const; // Return a reference to the history of actions
     std::vector<Workout>& getWorkoutOptions();
     void closeStudio();
     ~Studio();
@@ -29,7 +29,7 @@ private:
     bool open;
     std::vector<Trainer*> trainers;
     std::vector<Workout> workout_options;
-    //std::vector<BaseAction*> actionsLog;
+    std::vector<BaseAction*> actionsLog;
 };
 
 #endif //SPL_HW1_STUDIO_H

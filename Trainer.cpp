@@ -35,6 +35,7 @@ void Trainer::removeCustomer(int id)
         customersList.push_back(copy.back());
         copy.pop_back();
     }
+
     std::vector<OrderPair> copyOrder;
     for (int i = 0; i < orderList.size(); i++) {
         if(orderList[i].first!=id)

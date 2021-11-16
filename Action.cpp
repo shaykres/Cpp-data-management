@@ -4,8 +4,9 @@
 #include "Action.h"
 
 extern Studio* backup = nullptr;
-BaseAction::BaseAction()
+BaseAction::BaseAction():errorMsg(""), status(ActionStatus::ERROR)
 {
+
 }
 
 ActionStatus BaseAction::getStatus() const
@@ -51,7 +52,7 @@ void OpenTrainer::act(Studio& studio)
     }
     else {
         t->openTrainer();
-        for (int i = 0; i < customers.size(); i++) {
+        ;for (int i = 0; i < customers.size(); i++) {
             t->addCustomer(customers[i]);
         }
         complete();
@@ -328,9 +329,9 @@ PrintActionsLog::PrintActionsLog()
 
 void PrintActionsLog::act(Studio& studio)
 {
-   // for (int i = 0; i < studio.getActionsLog().size(); i++) {
-        //studio.getActionsLog()[i]->toString();
-   // }
+    for (int i = 0; i < studio.getActionsLog().size(); i++) {
+        studio.getActionsLog()[i]->toString();
+    }
     complete();
 }
 

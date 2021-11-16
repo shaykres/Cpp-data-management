@@ -7,9 +7,8 @@
 #include <string>
 #include <iostream>
 #include "Customer.h"
-
 #include "Trainer.h"
-#include "Studio.h"
+
 
 enum ActionStatus{
     COMPLETED, ERROR
@@ -37,7 +36,7 @@ private:
 
 };
 
-
+#include "Studio.h"
 class OpenTrainer : public BaseAction {
 public:
     OpenTrainer(int id, std::vector<Customer *> &customersList);

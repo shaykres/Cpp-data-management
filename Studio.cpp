@@ -67,10 +67,10 @@ Trainer* Studio::getTrainer(int tid)
     return nullptr;
 }
 
-//const std::vector<BaseAction*>& Studio::getActionsLog() const
-//{
-//    return actionsLog;
-//}
+const std::vector<BaseAction*>& Studio::getActionsLog() const
+{
+    return actionsLog;
+}
 
 std::vector<Workout>& Studio::getWorkoutOptions()
 {
@@ -88,8 +88,8 @@ Studio::~Studio()
     for (int i = 0; i < trainers.size(); i++)
         delete trainers[i];
 
-//    for (int i = 0; i < actionsLog.size(); i++)
-//        delete actionsLog[i];
+    for (int i = 0; i < actionsLog.size(); i++)
+        delete actionsLog[i];
 }
 
 Studio::Studio(const Studio& other):open(other.open)
@@ -98,9 +98,9 @@ Studio::Studio(const Studio& other):open(other.open)
         trainers.push_back(other.trainers[i]->clone());
     }
 
-//    for (int i = 0; i < other.actionsLog.size(); i++) {
-//        actionsLog.push_back(other.actionsLog[i]->clone());
-//    }
+    for (int i = 0; i < other.actionsLog.size(); i++) {
+        actionsLog.push_back(other.actionsLog[i]->clone());
+    }
     for (int i = 0; i < other.workout_options.size(); i++) {
         workout_options.push_back(other.workout_options[i]);
     }
@@ -123,11 +123,11 @@ void Studio::operator=(const Studio& other)
         for (int i = 0; i < other.trainers.size(); i++)
             trainers.push_back(other.trainers[i]->clone());
 
-//        for (int i = 0; i < actionsLog.size(); i++)
-//            delete actionsLog[i];
-//        actionsLog.clear();
-//        for (int i = 0; i < other.actionsLog.size(); i++)
-//            actionsLog.push_back(other.actionsLog[i]->clone());
+        for (int i = 0; i < actionsLog.size(); i++)
+            delete actionsLog[i];
+        actionsLog.clear();
+        for (int i = 0; i < other.actionsLog.size(); i++)
+            actionsLog.push_back(other.actionsLog[i]->clone());
 
     }
 }
