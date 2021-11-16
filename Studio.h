@@ -12,7 +12,13 @@
 #include <fstream>
 #include <cctype>
 
+enum string_code {
+    open,
+    order,
+    close,
+    closeAll,
 
+};
 
 class Studio{
 public:
@@ -29,7 +35,7 @@ public:
     Studio(const Studio& other);
     void operator=(const Studio& other);
     BaseAction* buildAction(char* command);
-    Customer* buildCustomer(char* command);
+    Customer* buildCustomer(std::string myCoustomer);
     Studio(Studio&& other);
     Studio& operator=(Studio &&other);
 
@@ -39,6 +45,10 @@ private:
     std::vector<Trainer*> trainers;
     std::vector<Workout> workout_options;
     std::vector<BaseAction*> actionsLog;
+    string_code hashit (std::string const& inString);
+    int create_id();
+
+
 };
 
 #endif //SPL_HW1_STUDIO_H

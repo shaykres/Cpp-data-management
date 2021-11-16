@@ -35,8 +35,8 @@ private:
     ActionStatus status;
 
 };
-
 #include "Studio.h"
+
 class OpenTrainer : public BaseAction {
 public:
     OpenTrainer(int id, std::vector<Customer *> &customersList);
