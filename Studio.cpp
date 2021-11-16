@@ -86,140 +86,89 @@ Studio::Studio(const std::string &configFilePath) {
 void Studio::start() {
     std::cout << "Studio is now open!" << std::endl;
     while (this->open) {
-        char command[500];
-        std::cin.getline(command, 500);
-        BaseAction *act = buildAction(command);
-        act->act(*this);
-        actionsLog.push_back(act);
-    }
-}
-
-BaseAction *Studio::buildAction(char *command) {
-    std::string action;
-    int j = 0;
-    while (j < strlen(command) && command[j] != ' ') {
-        action = action + command[j];
-        j++;
-    }
-    j++;
-    for (int i = 0; i < strlen(command) - j; ++i)
-        command[i] = command[j + i];
-
-    std::cout << command << std::endl;
-
-    BaseAction *a;
-    switch (hashit(action)) {
-        case string_code::open: {
-            int commandlenth=strlen(command) - j;
-
-            command[commandlenth] = '\0';
-
-            //std::cout << command << std::endl;
-
-            std::string idt;
-            std::vector<Customer *> customers;
-            int idlen = 0;
-            while (command[idlen] != ' ') {
-                idt = idt + command[idlen];
-                idlen++;
-            }
-            idlen++;
-            commandlenth=commandlenth-idlen;
-            for (int i = 0; i < commandlenth; ++i)
-                command[i] = command[idlen + i];
-            command[commandlenth] = '\0';
-            int trainerid = std::stoi(idt);
-
-            int indexCommand = 0;
-            int capacity= getTrainer(trainerid)->getCapacity();
-            while (indexCommand < commandlenth&&capacity>0) {
-                std::string myCoustomer;
-                while (command[indexCommand] != ' ' && indexCommand < commandlenth) {
-                    myCoustomer = myCoustomer + command[indexCommand];
-                    indexCommand++;
+        std::string action;
+        std::cin >> action;
+        BaseAction *a;
+        switch (hashit(action)) {
+            case string_code::open: {
+                std::string idt;
+                std::cin >> idt;
+                std::vector<Customer *> customers;
+                int trainerid = std::stoi(idt);
+                if (getTrainer(trainerid) != nullptr) {
+                    int capacity = getTrainer(trainerid)->getCapacity();
+                    std::string customer;
+                    while (std::cin>>customer>>std::ws&&capacity>0) {
+                        customers.push_back(buildCustomer(customer));
+                        capacity--;
+                    }
                 }
-                indexCommand++;
-               // std::cout << command << std::endl;
-                //std::cout << myCoustomer << std::endl;
-                commandlenth = commandlenth - indexCommand;
-                for (int i = 0; i < commandlenth; ++i)
-                    command[i] = command[indexCommand + i];
-                command[commandlenth ] = '\0';
-                indexCommand = 0;
-                customers.push_back(buildCustomer(myCoustomer));
-                capacity--;
+                a = new OpenTrainer(trainerid, customers);
+                break;
             }
-//            for(int i=0; i<customers.size(); i++){
-//                std::cout << customers[i]->getId()<<","<<customers[i]->getName() << customers[i]->toString()<<std::endl;
-//            }
-            a = new OpenTrainer(trainerid, customers);
-            break;
+            case string_code::order: {
+                std::string idt;
+                std::cin >> idt;
+                int id = std::stoi(idt);
+                a = new Order(id);
+                break;
+            }
+
+            case string_code::move: {
+                std::string src;
+                std::cin >> src;
+                int idsrc = std::stoi(src);
+                std::string dst;
+                std::cin >> dst;
+                int iddst = std::stoi(dst);
+                std::string c;
+                std::cin >> c;
+                int cid = std::stoi(c);
+                a = new MoveCustomer(idsrc, iddst, cid);
+                break;
+            }
+            case string_code::close: {
+                std::string idt;
+                std::cin >> idt;
+                int id = std::stoi(idt);
+                a = new Close(id);
+                break;
+            }
+            case string_code::closeall: {
+                a = new CloseAll();
+                break;
+            }
+            case string_code::workout_options:
+                a = new PrintWorkoutOptions();
+                break;
+            case string_code::status: {
+                std::string idt;
+                std::cin >> idt;
+                int id = std::stoi(idt);
+                a = new PrintTrainerStatus(id);
+                break;
+            }
+            case string_code::mylog:
+                a = new PrintActionsLog();
+                break;
+            case string_code::mybackup:
+                a = new BackupStudio();
+                break;
+            case string_code::restore:
+                a = new RestoreStudio();
+                break;
+            default:;
         }
-
-
-        case string_code::order: {
-            int id = std::stoi(command);
-            //std::cout << id << std::endl;
-            a = new Order(id);
-            break;
-        }
-
-
-        case string_code::move: {
-            int idsrc = std::stoi(command);
-            for (int i = 0; i < 3; ++i)
-                command[i] = command[i + 2];
-            int iddst = std::stoi(command);
-            for (int i = 0; i < 3; ++i)
-                command[i] = command[i + 2];
-            int cid = std::stoi(command);
-            a = new MoveCustomer(idsrc, iddst, cid);
-            break;
-        }
-
-
-        case string_code::close: {
-            int id = std::stoi(command);
-            a = new Close(id);
-            break;
-        }
-
-        case string_code::closeall: {
-            std::cout << "Studio is now closed!" << std::endl;
-            a = new CloseAll();
-            break;
-        }
-
-        case string_code::workout_options:
-            a = new PrintWorkoutOptions();
-            break;
-        case string_code::status: {
-            int id = std::stoi(command);
-            a = new PrintTrainerStatus(id);
-            break;
-        }
-        case string_code::mylog:
-            a = new PrintActionsLog();
-            break;
-        case string_code::mybackup:
-            a = new BackupStudio();
-            break;
-        case string_code::restore:
-            a = new RestoreStudio();
-            break;
-        default:;
-
+        a->act(*this);
+        actionsLog.push_back(a);
     }
-
-    return a;
 }
-
-Customer *Studio::buildCustomer(std::string myCoustomer) {
+Customer *Studio::buildCustomer(std::string myCustomer) {
     std::string type;
     std::string CustomerName;
-    int comma = myCoustomer.find(",");
-    CustomerName = myCoustomer.substr(0, comma);
-    type = myCoustomer.substr(comma + 1, myCoustomer.size());
+    int comma = myCustomer.find(",");
+    CustomerName = myCustomer.substr(0, comma);
+    type = myCustomer.substr(comma + 1, myCustomer.size());
 
     Customer *c;
     if (std::equal(type.begin(), type.end(), "swt")) {

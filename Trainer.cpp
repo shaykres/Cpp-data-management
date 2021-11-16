@@ -41,6 +41,8 @@ void Trainer::removeCustomer(int id)
     for (int i = 0; i < orderList.size(); i++) {
         if(orderList[i].first!=id)
             copyOrder.push_back(orderList[i]);
+        else
+            salary=salary-orderList[i].second.getPrice();
         //orderList.pop_back();
     }
     orderList.clear();
@@ -78,8 +80,9 @@ void Trainer::order(const int customer_id, const std::vector<int> workout_ids, c
         while (workout_options[j].getId() != workout_ids[i])
             j++;
         orderList.push_back(OrderPair(customer_id, workout_options[j]));
-        std::cout << getCustomer(customer_id)->getName()<<" Is Doing "<< workout_options[j].getName() << std::endl;
+        std::cout<< getCustomer(customer_id)->getName()<<" Is Doing "<< workout_options[j].getName() << std::endl;
     }
+
 }
 
 void Trainer::openTrainer()
@@ -100,11 +103,6 @@ void Trainer::closeTrainer()
 
 int Trainer::getSalary()
 {
-
-    for (int i = 0;i < orderList.size();i++) {
-        salary = salary + orderList[i].second.getPrice();
-    }
-
     return salary;
 }
 
@@ -200,6 +198,14 @@ void Trainer::addCustomerOrders(std::vector<OrderPair> CustomerOrders) {
 
     for(int i=0; i<CustomerOrders.size(); i++){
         orderList.push_back(CustomerOrders[i]);
+    }
+    updateSalary();
+}
+
+void Trainer::updateSalary() {
+
+    for(int i=0;i<orderList.size();i++){
+        salary = salary + orderList[i].second.getPrice();
     }
 }
 
