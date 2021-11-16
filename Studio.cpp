@@ -164,8 +164,8 @@ BaseAction* Studio::buildAction(char* command){
                     indexCommand++;
                 }
                 indexCommand++;
-                std::cout << command << std::endl;
-                std::cout << myCoustomer << std::endl;
+               // std::cout << command << std::endl;
+               // std::cout << myCoustomer << std::endl;
                 len=len-indexCommand;
                 for (int i = 0; i < len; ++i)
                     command[i] = command[indexCommand + i];
@@ -173,9 +173,9 @@ BaseAction* Studio::buildAction(char* command){
                 indexCommand=0;
                 customers.push_back(buildCustomer(myCoustomer));
             }
-            for(int i=0; i<customers.size(); i++){
-                std::cout << customers[i]->getId() << "," << customers[i]->getName()<< std::endl;
-            }
+//            for(int i=0; i<customers.size(); i++){
+//                std::cout << customers[i]->getId() << "," << customers[i]->getName()<< std::endl;
+//            }
             a=new OpenTrainer(trainerid,customers);
 
             break;
@@ -299,7 +299,7 @@ string_code Studio::hashit(const std::string &inString) {
 }
 
 int Studio::create_id() {
-    static std::atomic<int> id{0};
+    static std::atomic<int> id{-1};
     return id.fetch_add(1, std::memory_order_relaxed) + 1;
 
 }
