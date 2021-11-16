@@ -33,12 +33,12 @@ std::string Workout::toString()
 {
     std::string str;
     if (getType() == ANAEROBIC)
-        str= getName() + ",  Anaerobic, " ;
+        str= getName() + ", Anaerobic, " ;
     if (getType() == MIXED)
-        str = getName() + ",  Mixed, ";
+        str = getName() + ", Mixed, ";
     else
-        str = getName() + ",  Cardio, ";
-    str.insert(str.end(), getPrice());
+        str = getName() + ", Cardio, ";
+    str=str+std::to_string(getPrice());
     return str;
 }
 

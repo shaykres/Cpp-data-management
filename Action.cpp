@@ -25,7 +25,7 @@ void BaseAction::complete()
 
 void BaseAction::error(std::string errorMsg)
 {
-    errorMsg = errorMsg;
+    this->errorMsg = errorMsg;
     status = ERROR;
     std::cout << getErrorMsg() << std::endl;
 }
@@ -62,7 +62,7 @@ void OpenTrainer::act(Studio& studio)
 std::string OpenTrainer::toString() const
 {
     std::string str = "open ";
-    str.insert(str.end(), trainerId);
+    str=str+std::to_string(trainerId);
     for (int i = 0;i < customers.size();i++) {
         str=str+" "+customers[i]->getName()+","+ customers[i]->toString();
     }
@@ -117,7 +117,7 @@ void Order::act(Studio& studio)
 std::string Order::toString() const
 {
     std::string str = "order ";
-    str.insert(str.end(), trainerId);
+    str=str+std::to_string(trainerId);
     if (getStatus() == COMPLETED)
         str = str + " Completed";
     else
@@ -159,11 +159,7 @@ void MoveCustomer::act(Studio& studio)
 std::string MoveCustomer::toString() const
 {
     std::string str = "move ";
-    str.insert(str.end(), srcTrainer);
-    str = str + " ";
-    str.insert(str.end(), dstTrainer);
-    str = str + " ";
-    str.insert(str.end(), id);
+    str=str+std::to_string(srcTrainer)+" "+std::to_string(dstTrainer)+" "+std::to_string(id);
     if (getStatus() == COMPLETED)
         str = str + " Completed";
     else
@@ -200,7 +196,7 @@ void Close::act(Studio& studio)
 std::string Close::toString() const
 {
     std::string str = "close ";
-    str.insert(str.end(), trainerId);
+    str=str+std::to_string(trainerId);
     if (getStatus() == COMPLETED)
         str = str + " Completed";
     else
@@ -224,6 +220,7 @@ CloseAll::CloseAll()
 
 void CloseAll::act(Studio& studio)
 {
+
     for (int i = 0; i < studio.getNumOfTrainers(); i++) {
         if (studio.getTrainer(i)->isOpen()) {
             Close close(i);
@@ -308,8 +305,7 @@ void PrintTrainerStatus::act(Studio& studio)
 std::string PrintTrainerStatus::toString() const
 {
     std::string str = "status ";
-    str.insert(str.end(), trainerId);
-    str = str + " Completed";
+    str=str+std::to_string(trainerId)+ " Completed";
     return str;
 }
 
@@ -330,7 +326,7 @@ PrintActionsLog::PrintActionsLog()
 void PrintActionsLog::act(Studio& studio)
 {
     for (int i = 0; i < studio.getActionsLog().size(); i++) {
-        studio.getActionsLog()[i]->toString();
+        std::cout<<studio.getActionsLog()[i]->toString()<<std::endl;
     }
     complete();
 }

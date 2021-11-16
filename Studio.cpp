@@ -116,23 +116,61 @@ void Studio::start()
         std::cin.getline(command,500);
         BaseAction* act=buildAction(command);
         act->act(*this);
+        actionsLog.push_back(act);
     }
 }
 BaseAction* Studio::buildAction(char* command){
     std::string action;
+    BaseAction* a;
     int j=0;
-    while(command[j] != ' '){
+    while(j<strlen(command)&&command[j] != ' '){
         action=action+command[j];
         j++;
     }
     j++;
     for (int i=0; i<j ; ++i)
         command[i] = command[j+i];
-    BaseAction* a;
     if(action=="open"){
-       char id =command[0];
+       int id =std::stoi(command);
+       std::cout << id << std::endl;
     }
-    a=new Order(2);
+    if(action=="order"){
+        int id =std::stoi(command);
+        a=new Order(id);
+    }
+    if(action=="move"){
+        int idsrc =std::stoi(command);
+        for (int i=0; i<3 ; ++i)
+            command[i] = command[i+2];
+        int iddst=std::stoi(command);
+        for (int i=0; i<3 ; ++i)
+            command[i] = command[i+2];
+        int cid=std::stoi(command);
+        a=new MoveCustomer(idsrc,iddst,cid);
+    }
+    if(action=="close"){
+        int id =std::stoi(command);
+        a=new Close(id);
+    }
+    if(action=="closeall"){
+        a=new CloseAll();
+    }
+    if(action=="workout_option"){
+        a=new PrintWorkoutOptions();
+    }
+    if(action=="status"){
+        int id =std::stoi(command);
+        a=new PrintTrainerStatus(id);
+    }
+    if(action=="log"){
+        a=new PrintActionsLog();
+    }
+    if(action=="backup"){
+        a=new BackupStudio();
+    }
+    if (action=="restore"){
+        a=new RestoreStudio();
+    }
     return a;
 }
 Customer* Studio:: buildCustomer(char* command){
@@ -180,7 +218,7 @@ std::vector<Workout>& Studio::getWorkoutOptions()
 void Studio::closeStudio()
 {
     open = false;
-    delete this;
+    //fix
 }
 
 Studio::~Studio()
