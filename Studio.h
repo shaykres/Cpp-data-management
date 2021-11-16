@@ -10,6 +10,8 @@
 #include "Trainer.h"
 #include "Action.h"
 #include <fstream>
+#include <cctype>
+
 
 
 class Studio{
@@ -23,8 +25,13 @@ public:
     std::vector<Workout>& getWorkoutOptions();
     void closeStudio();
     ~Studio();
+    void clear();
     Studio(const Studio& other);
     void operator=(const Studio& other);
+    Studio(Studio&& other);
+    Studio& operator=(Studio &&other);
+
+
 private:
     bool open;
     std::vector<Trainer*> trainers;

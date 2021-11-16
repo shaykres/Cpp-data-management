@@ -117,9 +117,8 @@ int Trainer::getId()
 
 Trainer::~Trainer()
 {
-    for (int i = 0; i < customersList.size(); i++)
-        delete customersList[i];
-    orderList.clear();
+    clear();
+
 }
 
 Trainer::Trainer(const Trainer& other):id(other.id), capacity(other.capacity), open(other.open) //orderList(other.orderList)
@@ -156,5 +155,30 @@ Trainer* Trainer::clone()
 void Trainer::setId(int Id) {
     id=Id;
 
+}
+
+Trainer::Trainer(Trainer &&other):id(other.id), capacity(other.capacity), open(other.open),customersList(other.customersList),
+orderList(other.orderList){
+    other.customersList.clear();
+    other.orderList.clear();
+
+}
+
+Trainer &Trainer::operator=(Trainer &&other) {
+    if(this!=&other){
+        clear();
+        id=other.id;
+        capacity=other.capacity;
+        open=other.open;
+        customersList=other.customersList;
+        orderList=other.orderList;
+    }
+    return *this;
+}
+
+void Trainer::clear() {
+    for (int i = 0; i < customersList.size(); i++)
+        delete customersList[i];
+    orderList.clear();
 }
 
