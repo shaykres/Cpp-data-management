@@ -160,7 +160,7 @@ void Trainer::setId(int Id) {
 }
 
 Trainer::Trainer(Trainer &&other):id(other.id), capacity(other.capacity), open(other.open),salary(other.salary),customersList(other.customersList),
-orderList(other.orderList){
+    orderList(other.orderList){
     other.customersList.clear();
     other.orderList.clear();
 

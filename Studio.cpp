@@ -86,50 +86,65 @@ Studio::Studio(const std::string &configFilePath) {
 void Studio::start() {
     std::cout << "Studio is now open!" << std::endl;
     while (this->open) {
-        std::string action;
-        std::cin >> action;
+        std::string command;
+        std::getline(std::cin,command);
+        std::string action=command.substr(0,command.find(" "));
+        command=command.substr(command.find(" ")+1,command.size());
         BaseAction *a;
         switch (hashit(action)) {
             case string_code::open: {
-                std::string idt;
-                std::cin >> idt;
+                std::string idt=command.substr(0,command.find(" "));
+                command=command.substr(command.find(" ")+1,command.size());
                 std::vector<Customer *> customers;
                 int trainerid = std::stoi(idt);
                 if (getTrainer(trainerid) != nullptr) {
                     int capacity = getTrainer(trainerid)->getCapacity();
                     std::string customer;
-                    while (std::cin>>customer>>std::ws&&capacity>0) {
-                        customers.push_back(buildCustomer(customer));
+                    while (command.size()>0&&capacity>0) {
+
+                        customer=command.substr(0,command.find(" "));
+                        if(customer.size()+1<command.size()) {
+                            command = command.substr(customer.size() + 1, command.size());
+                            customers.push_back(buildCustomer(customer));
+                        }
+                        else {
+                            customers.push_back(buildCustomer(command));
+                            break;
+                        }
                         capacity--;
                     }
+
                 }
+//                for(int i=0; i<customers.size(); i++){
+//                    std::cout <<customers[i]->getId()<<","<<customers[i]->getName()<<","<<customers[i]->toString() << std::endl;
+//                }
                 a = new OpenTrainer(trainerid, customers);
                 break;
             }
             case string_code::order: {
-                std::string idt;
-                std::cin >> idt;
+                std::string idt=command.substr(0,command.find(" "));
+                command=command.substr(command.find(" ")+1,command.size());
                 int id = std::stoi(idt);
                 a = new Order(id);
                 break;
             }
 
             case string_code::move: {
-                std::string src;
-                std::cin >> src;
+                std::string src=command.substr(0,command.find(" "));
+                command=command.substr(command.find(" ")+1,command.size());
                 int idsrc = std::stoi(src);
-                std::string dst;
-                std::cin >> dst;
+                std::string dst=command.substr(0,command.find(" "));
+                command=command.substr(command.find(" ")+1,command.size());
                 int iddst = std::stoi(dst);
-                std::string c;
-                std::cin >> c;
+                std::string c=command.substr(0,command.find(" "));
+                command=command.substr(command.find(" ")+1,command.size());
                 int cid = std::stoi(c);
                 a = new MoveCustomer(idsrc, iddst, cid);
                 break;
             }
             case string_code::close: {
-                std::string idt;
-                std::cin >> idt;
+                std::string idt=command.substr(0,command.find(" "));
+                command=command.substr(command.find(" ")+1,command.size());
                 int id = std::stoi(idt);
                 a = new Close(id);
                 break;
@@ -142,26 +157,30 @@ void Studio::start() {
                 a = new PrintWorkoutOptions();
                 break;
             case string_code::status: {
-                std::string idt;
-                std::cin >> idt;
+                std::string idt=command.substr(0,command.find(" "));
+                command=command.substr(command.find(" ")+1,command.size());
                 int id = std::stoi(idt);
                 a = new PrintTrainerStatus(id);
                 break;
             }
-            case string_code::mylog:
+            case string_code::mylog: {
                 a = new PrintActionsLog();
                 break;
-            case string_code::mybackup:
+            }
+            case string_code::mybackup: {
                 a = new BackupStudio();
                 break;
-            case string_code::restore:
+            }
+            case string_code::restore: {
                 a = new RestoreStudio();
                 break;
+            }
             default:;
         }
         a->act(*this);
         actionsLog.push_back(a);
     }
+
 }
 Customer *Studio::buildCustomer(std::string myCustomer) {
     std::string type;
@@ -212,6 +231,8 @@ Studio::~Studio() {
 }
 
 Studio::Studio(const Studio &other) : open(other.open) {
+    std::cout << "hello" << std::endl;
+
     for (int i = 0; i < other.trainers.size(); i++) {
         trainers.push_back(other.trainers[i]->clone());
     }
@@ -222,8 +243,6 @@ Studio::Studio(const Studio &other) : open(other.open) {
     for (int i = 0; i < other.workout_options.size(); i++) {
         workout_options.push_back(other.workout_options[i]);
     }
-
-
 }
 
 void Studio::operator=(const Studio &other) {
@@ -274,5 +293,22 @@ void Studio::clear() {
 
     for (int i = 0; i < actionsLog.size(); i++)
         delete actionsLog[i];
+}
+
+Studio::Studio(Studio &&other) :open(other.open), workout_options(other.workout_options),actionsLog(other.actionsLog),trainers(other.trainers){
+    other.trainers.clear();
+    other.workout_options.clear();
+    other.actionsLog.clear();
+}
+
+Studio &Studio::operator=(Studio &&other) {
+    if(this!=&other){
+        clear();
+        open=other.open;
+        trainers=other.trainers;
+        workout_options=other.workout_options;
+        actionsLog=other.actionsLog;
+    }
+    return *this;
 }
 

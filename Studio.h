@@ -39,7 +39,7 @@ public:
     void clear();
     Studio(const Studio& other);
     void operator=(const Studio& other);
-    BaseAction* buildAction(char* command);
+    BaseAction* buildAction(std::string command);
     Customer* buildCustomer(std::string myCoustomer);
     Studio(Studio&& other);
     Studio& operator=(Studio &&other);

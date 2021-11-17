@@ -2,6 +2,9 @@
 #include "Studio.h"
 #include <iostream>
 
+Studio* backup = nullptr;
+
+using namespace std;
 
 int main(int argc, char** argv){
     if(argc!=2){
@@ -9,7 +12,7 @@ int main(int argc, char** argv){
         return 0;
     }
     std::string configurationFile = argv[1];
-    Studio* backup = nullptr;
+
     Studio studio(configurationFile);
     studio.start();
     if(backup!=nullptr){

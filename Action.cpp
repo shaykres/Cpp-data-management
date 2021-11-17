@@ -3,7 +3,8 @@
 //
 #include "Action.h"
 
-extern Studio* backup = nullptr;
+extern Studio* backup;
+
 BaseAction::BaseAction():errorMsg(""), status(ActionStatus::ERROR)
 {
 
@@ -224,7 +225,6 @@ void CloseAll::act(Studio& studio)
 {
     std::cout << "S" << std::endl;
     for (int i = 0; i < studio.getNumOfTrainers(); i++) {
-        std::cout << "S" << std::endl;
         if (studio.getTrainer(i)->isOpen()) {
             BaseAction* close=new Close(i);
             close->act(studio);
@@ -356,8 +356,9 @@ BackupStudio::BackupStudio()
 
 void BackupStudio::act(Studio& studio)
 {
-    Studio s = Studio(studio);
-    *backup = s;
+    backup=new Studio(studio);
+    //Studio s = Studio(studio);
+    //*backup = s;
     complete();
 }
 
