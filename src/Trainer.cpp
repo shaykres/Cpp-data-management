@@ -164,18 +164,18 @@ Trainer::Trainer(Trainer &&other):id(other.id), capacity(other.capacity), open(o
 
 }
 
-Trainer &Trainer::operator=(Trainer &&other) {
-    if(this!=&other){
-        clear();
-        id=other.id;
-        capacity=other.capacity;
-        salary=other.salary;
-        open=other.open;
-        customersList=other.customersList;
-        orderList=other.orderList;
-    }
-    return *this;
-}
+//Trainer &Trainer::operator=(Trainer &&other) {
+//    if(this!=&other){
+//        clear();
+//        id=other.id;
+//        capacity=other.capacity;
+//        salary=other.salary;
+//        open=other.open;
+//        customersList=other.customersList;
+//        orderList=other.orderList;
+//    }
+//    return *this;
+//}
 
 void Trainer::clear() {
     for (int i = 0; i < customersList.size(); i++)

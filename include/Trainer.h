@@ -5,8 +5,8 @@
 #ifndef SPL_HW1_TRAINER_H
 #define SPL_HW1_TRAINER_H
 #include <vector>
-#include "Customer.h"
 #include "Workout.h"
+#include "Customer.h"
 #include <iostream>
 
 typedef std::pair<int, Workout> OrderPair;
