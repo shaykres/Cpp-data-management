@@ -45,6 +45,7 @@ public:
     BaseAction* clone();
     OpenTrainer(const OpenTrainer& other);
     ~OpenTrainer();
+
 private:
     const int trainerId;
     std::vector<Customer *> customers;
@@ -58,7 +59,6 @@ public:
     std::string toString() const;
     BaseAction* clone();
     Order(const Order& other);
-    //~Order();
 private:
     const int trainerId;
 };
@@ -131,7 +131,6 @@ public:
     std::string toString() const;
     BaseAction* clone();
     PrintActionsLog(const PrintActionsLog& other);
-    //~PrintActionsLog();
 private:
 };
 
@@ -154,6 +153,5 @@ public:
     std::string toString() const;
     BaseAction* clone();
     RestoreStudio(const RestoreStudio& other);
-
 };
 #endif //SPL_HW1_ACTION_H

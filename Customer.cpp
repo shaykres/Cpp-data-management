@@ -128,10 +128,10 @@ std::vector<int> HeavyMuscleCustomer::order(const std::vector<Workout>& workout_
 //    }
 
     std::sort(workout.begin(), workout.end());
-    while( workout.size()>0) {
-        myWorkout.push_back(workout.back().getId());
-        workout.pop_back();
+    for(int i=0; i<workout.size(); i++){
+        myWorkout.push_back(workout[i].getId());
     }
+    workout.clear();
     return myWorkout;
 }
 

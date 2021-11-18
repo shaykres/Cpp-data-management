@@ -21,7 +21,7 @@ public:
     ~Workout();
     Workout(const Workout& other);
     bool operator < (const Workout& str) const;
-    void operator = (const Workout& str) ;
+   // void operator = (const Workout& str) ;
 
 
 private:
