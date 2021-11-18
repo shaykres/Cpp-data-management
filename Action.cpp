@@ -37,7 +37,7 @@ std::string BaseAction::getErrorMsg() const
 }
 
 BaseAction::~BaseAction() {
-    std::cout << "base action distructor" << std::endl;
+
 }
 
 
