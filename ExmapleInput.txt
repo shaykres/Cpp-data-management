@@ -6,6 +6,7 @@
 
 # Work Options
 Yoga, Anaerobic, 90
+shay, Anaerobic, 110
 Pilates, Anaerobic, 110
 Spinning, Mixed, 120
 Zumba, Cardio, 100
@@ -14,4 +15,5 @@ CrossFit, Mixed, 140
 Aviv, Anaerobic, 120
 Lior, Mixed, 140
 Shay, Cardio, 5
+
 

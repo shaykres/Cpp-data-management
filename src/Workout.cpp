@@ -57,7 +57,7 @@ bool Workout::operator<(const Workout &str) const {
      return  (price < str.getPrice());
 }
 
-void Workout::operator=(const Workout &str) {
-
-}
+//void Workout::operator=(const Workout &str) {
+//
+//}
 

@@ -294,6 +294,8 @@ void Studio::clear() {
 
     for (int i = 0; i < actionsLog.size(); i++)
         delete actionsLog[i];
+
+    workout_options.clear();
 }
 
 Studio::Studio(Studio &&other) : open(other.open), workout_options(other.workout_options), actionsLog(other.actionsLog),

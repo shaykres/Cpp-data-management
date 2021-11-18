@@ -37,8 +37,9 @@ std::string BaseAction::getErrorMsg() const
 }
 
 BaseAction::~BaseAction() {
-    std::cout << "base action distructor" << std::endl;
+
 }
+
 
 OpenTrainer::OpenTrainer(int id, std::vector<Customer*>& customersList):trainerId(id), customers(customersList)
 {
@@ -91,6 +92,7 @@ OpenTrainer::~OpenTrainer()
 {
     customers.clear();
 }
+
 
 Order::Order(int id):trainerId(id)
 {

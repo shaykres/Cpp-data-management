@@ -29,7 +29,7 @@ Customer::Customer(const Customer& other):id(other.id), name(other.name)
 }
 
 Customer::~Customer() {
-   // std::cout << "customer distructor" << std::endl;
+
 }
 
 
@@ -123,10 +123,10 @@ std::vector<int> HeavyMuscleCustomer::order(const std::vector<Workout>& workout_
             workout.push_back(workout_options[i]);
     }
     std::sort(workout.begin(), workout.end());
-    while( workout.size()>0) {
-        myWorkout.push_back(workout.back().getId());
-        workout.pop_back();
+    for(int i=0; i<workout.size(); i++){
+        myWorkout.push_back(workout[i].getId());
     }
+    workout.clear();
     return myWorkout;
 }
 
