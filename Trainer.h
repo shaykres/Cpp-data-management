@@ -36,6 +36,7 @@ public:
     Trainer& operator=(Trainer &&other);
     std::vector<OrderPair> getCustomerOrder(int Customerid);
     void addCustomerOrders(std::vector<OrderPair> CustomerOrders);
+    void updateSalary(OrderPair pair);
     void updateSalary();
     void printorderList();
 private:

@@ -248,11 +248,9 @@ Studio::Studio(const Studio &other) : open(other.open) {
 }
 
 void Studio::operator=(const Studio &other) {
-    std::cout << "important!!" << std::endl;
+
     if (&other != this) {
-
         open = other.open;
-
         workout_options.clear();
         for (int i = 0; i < other.workout_options.size(); i++)
             workout_options.push_back(other.workout_options[i]);
@@ -268,8 +266,6 @@ void Studio::operator=(const Studio &other) {
         actionsLog.clear();
         for (int i = 0; i < other.actionsLog.size(); i++)
             actionsLog.push_back(other.actionsLog[i]->clone());
-        std::cout << "very important!!" << std::endl;
-
     }
 }
 
