@@ -1,26 +1,36 @@
-CXX = g++
-CXXFLAGS = -g -Wall -std=c++11
-CPPFLAGS = -I ./include -MMD -MP
+# All Targets
+all: run
 
-SRCS = $(wildcard ./src/*.cpp)
-OBJS = $(patsubst ./src/%.cpp,./bin/%.o, $(SRCS))
-DEPS := $(patsubst %.o,%.d, $(OBJS))
+# Tool invocations
+# Executable "hello" depends on the files hello.o and run.o.
 
-# default target
-all: bin/Studio
+run: bin/main.o bin/Studio.o bin/Trainer.o bin/Customer.o bin/Workout.o bin/Action.o
+	@echo 'Building target: run'
+	@echo 'Invoking: C++ Linker'
+	g++ -o bin/run bin/main.o bin/Studio.o bin/Trainer.o bin/Workout.o bin/Customer.o bin/Action.o
+	@echo 'Finished building target: run'
+	@echo ' '
 
-# build studio
-bin/Studio: $(OBJS)
-	@echo "Building ..."
-	$(CXX) $(OBJS) -o $@
-	@echo "Finished building"
+# Depends on the source and header files
+bin/main.o: src/main.cpp 
+	g++ -g -Wall -Weffc++ -std=c++11 -c -Iinclude -o bin/main.o src/main.cpp 
 
-# build cpp files
-bin/%.o: src/%.cpp
-	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+bin/Studio.o: src/Studio.cpp
+	g++ -g -Wall -Weffc++ -std=c++11 -c -Iinclude -o bin/Studio.o src/Studio.cpp 
 
-# clean build files
+bin/Trainer.o: src/Trainer.cpp
+	g++ -g -Wall -Weffc++ -std=c++11 -c -Iinclude -o bin/Trainer.o src/Trainer.cpp
+
+bin/Customer.o: src/Customer.cpp
+	g++ -g -Wall -Weffc++ -std=c++11 -c -Iinclude -o bin/Customer.o src/Customer.cpp
+
+bin/Action.o: src/Action.cpp
+	g++ -g -Wall -Weffc++ -std=c++11 -c -Iinclude -o bin/Action.o src/Action.cpp
+
+bin/Workout.o: src/Workout.cpp
+	g++ -g -Wall -Weffc++ -std=c++11 -c -Iinclude -o bin/Workout.o src/Workout.cpp
+	
+#Clean the build directory
 clean:
-	@rm -f ./bin/*
-
--include $(DEPS)
+	@echo 'cleaning'
+	rm -f bin/*
