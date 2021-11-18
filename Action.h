@@ -25,7 +25,7 @@ public:
     virtual std::string toString() const=0;
     virtual BaseAction* clone() = 0;
     BaseAction(const BaseAction& other);
-    virtual ~BaseAction();
+    virtual ~BaseAction()=0;
 protected:
     void complete();
     void error(std::string errorMsg);
@@ -58,6 +58,7 @@ public:
     std::string toString() const;
     BaseAction* clone();
     Order(const Order& other);
+    ~Order();
 private:
     const int trainerId;
 };
@@ -130,6 +131,7 @@ public:
     std::string toString() const;
     BaseAction* clone();
     PrintActionsLog(const PrintActionsLog& other);
+    ~PrintActionsLog();
 private:
 };
 

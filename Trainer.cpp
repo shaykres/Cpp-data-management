@@ -122,11 +122,13 @@ Trainer::~Trainer()
 
 }
 
-Trainer::Trainer(const Trainer& other):id(other.id), capacity(other.capacity), open(other.open),salary(other.salary) //orderList(other.orderList)
+Trainer::Trainer(const Trainer& other):id(other.id), capacity(other.capacity), open(other.open),salary(other.salary) ,orderList(other.orderList)
 {
+
     for (int i = 0; i < other.customersList.size(); i++) {
         customersList.push_back(other.customersList[i]->clone());
     }
+
 }
 
 void Trainer::operator=(const Trainer& other)

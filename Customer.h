@@ -15,7 +15,7 @@ public:
     virtual std::string toString() const = 0;
     std::string getName() const;
     int getId() const;
-    virtual ~Customer();
+     ~Customer();
     //void operator=(const Customer& other);
     Customer(const Customer& other);
     virtual Customer* clone()=0;
@@ -33,6 +33,7 @@ public:
     std::vector<int> order(const std::vector<Workout> &workout_options);
     std::string toString() const;
     Customer* clone();
+//    ~SweatyCustomer();
 
 private:
 };
@@ -44,6 +45,7 @@ public:
     std::vector<int> order(const std::vector<Workout> &workout_options);
     std::string toString() const;
     Customer* clone();
+//    ~CheapCustomer();
 private:
 };
 
@@ -54,6 +56,7 @@ public:
     std::vector<int> order(const std::vector<Workout> &workout_options);
     std::string toString() const;
     Customer* clone();
+//    ~HeavyMuscleCustomer();
 private:
 };
 
@@ -64,6 +67,7 @@ public:
     std::vector<int> order(const std::vector<Workout> &workout_options);
     std::string toString() const;
     Customer* clone();
+//    ~FullBodyCustomer();
 private:
 };
 #endif //SPL_HW1_CUSTOMER_H

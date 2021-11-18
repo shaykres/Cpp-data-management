@@ -29,8 +29,9 @@ Customer::Customer(const Customer& other):id(other.id), name(other.name)
 }
 
 Customer::~Customer() {
-
+    std::cout << "customer distructor" << std::endl;
 }
+
 
 //void Customer::operator=(const Customer& other)
 //{
@@ -67,6 +68,9 @@ Customer* SweatyCustomer::clone()
     return c;
 }
 
+//SweatyCustomer::~SweatyCustomer() {
+//
+//}
 
 
 CheapCustomer::CheapCustomer(std::string name, int id) :Customer(name, id)
@@ -101,6 +105,10 @@ Customer* CheapCustomer::clone()
     CheapCustomer* c = new CheapCustomer(*this);
     return c;
 }
+
+//CheapCustomer::~CheapCustomer() {
+//
+//}
 
 HeavyMuscleCustomer::HeavyMuscleCustomer(std::string name, int id) :Customer(name, id)
 {
@@ -137,6 +145,10 @@ Customer* HeavyMuscleCustomer::clone()
     HeavyMuscleCustomer* c = new HeavyMuscleCustomer(*this);
     return c;
 }
+
+//HeavyMuscleCustomer::~HeavyMuscleCustomer() {
+//
+//}
 
 FullBodyCustomer::FullBodyCustomer(std::string name, int id) :Customer(name, id)
 {
@@ -203,4 +215,8 @@ Customer* FullBodyCustomer::clone()
     FullBodyCustomer* c = new FullBodyCustomer(*this);
     return c;
 }
+
+//FullBodyCustomer::~FullBodyCustomer() {
+//
+//}
 

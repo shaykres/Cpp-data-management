@@ -37,7 +37,7 @@ std::string BaseAction::getErrorMsg() const
 }
 
 BaseAction::~BaseAction() {
-
+    std::cout << "base action distructor" << std::endl;
 }
 
 OpenTrainer::OpenTrainer(int id, std::vector<Customer*>& customersList):trainerId(id), customers(customersList)
@@ -48,6 +48,8 @@ OpenTrainer::OpenTrainer(int id, std::vector<Customer*>& customersList):trainerI
 void OpenTrainer::act(Studio& studio)
 {
     Trainer* t = studio.getTrainer(trainerId);
+    if(t== nullptr)
+        std::cout <<"t is null" << std::endl;
     if (t == nullptr|| t->isOpen()){
         error( "Workout session does not exist or is already open");
     }
@@ -89,8 +91,7 @@ OpenTrainer::OpenTrainer(const OpenTrainer& other):BaseAction(other),trainerId(o
 
 OpenTrainer::~OpenTrainer()
 {
-    for (int i = 0; i < customers.size(); i++)
-        delete customers[i];
+    customers.clear();
 }
 
 Order::Order(int id):trainerId(id)
@@ -134,6 +135,10 @@ BaseAction* Order::clone()
 
 Order::Order(const Order& other) :BaseAction(other), trainerId(other.trainerId)
 {
+}
+
+Order::~Order() {
+    std::cout << "order distructor" << std::endl;
 }
 
 MoveCustomer::MoveCustomer(int src, int dst, int customerId):srcTrainer(src), dstTrainer(dst), id(customerId)
@@ -350,6 +355,10 @@ PrintActionsLog::PrintActionsLog(const PrintActionsLog& other):BaseAction(other)
 {
 }
 
+PrintActionsLog::~PrintActionsLog() {
+    std::cout << "log distructor" << std::endl;
+}
+
 BackupStudio::BackupStudio()
 {
 }
@@ -357,8 +366,6 @@ BackupStudio::BackupStudio()
 void BackupStudio::act(Studio& studio)
 {
     backup=new Studio(studio);
-    //Studio s = Studio(studio);
-    //*backup = s;
     complete();
 }
 
@@ -387,6 +394,7 @@ void RestoreStudio::act(Studio& studio)
         error("No backup available");
     else {
         studio = *backup;
+        backup = nullptr;
         complete();
     }
 }

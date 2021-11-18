@@ -87,27 +87,26 @@ void Studio::start() {
     std::cout << "Studio is now open!" << std::endl;
     while (this->open) {
         std::string command;
-        std::getline(std::cin,command);
-        std::string action=command.substr(0,command.find(" "));
-        command=command.substr(command.find(" ")+1,command.size());
+        std::getline(std::cin, command);
+        std::string action = command.substr(0, command.find(" "));
+        command = command.substr(command.find(" ") + 1, command.size());
         BaseAction *a;
         switch (hashit(action)) {
             case string_code::open: {
-                std::string idt=command.substr(0,command.find(" "));
-                command=command.substr(command.find(" ")+1,command.size());
+                std::string idt = command.substr(0, command.find(" "));
+                command = command.substr(command.find(" ") + 1, command.size());
                 std::vector<Customer *> customers;
                 int trainerid = std::stoi(idt);
                 if (getTrainer(trainerid) != nullptr) {
                     int capacity = getTrainer(trainerid)->getCapacity();
                     std::string customer;
-                    while (command.size()>0&&capacity>0) {
+                    while (command.size() > 3 && capacity > 0) {
 
-                        customer=command.substr(0,command.find(" "));
-                        if(customer.size()+1<command.size()) {
+                        customer = command.substr(0, command.find(" "));
+                        if (customer.size() + 1 < command.size()) {
                             command = command.substr(customer.size() + 1, command.size());
                             customers.push_back(buildCustomer(customer));
-                        }
-                        else {
+                        } else {
                             customers.push_back(buildCustomer(command));
                             break;
                         }
@@ -122,29 +121,29 @@ void Studio::start() {
                 break;
             }
             case string_code::order: {
-                std::string idt=command.substr(0,command.find(" "));
-                command=command.substr(command.find(" ")+1,command.size());
+                std::string idt = command.substr(0, command.find(" "));
+                command = command.substr(command.find(" ") + 1, command.size());
                 int id = std::stoi(idt);
                 a = new Order(id);
                 break;
             }
 
             case string_code::move: {
-                std::string src=command.substr(0,command.find(" "));
-                command=command.substr(command.find(" ")+1,command.size());
+                std::string src = command.substr(0, command.find(" "));
+                command = command.substr(command.find(" ") + 1, command.size());
                 int idsrc = std::stoi(src);
-                std::string dst=command.substr(0,command.find(" "));
-                command=command.substr(command.find(" ")+1,command.size());
+                std::string dst = command.substr(0, command.find(" "));
+                command = command.substr(command.find(" ") + 1, command.size());
                 int iddst = std::stoi(dst);
-                std::string c=command.substr(0,command.find(" "));
-                command=command.substr(command.find(" ")+1,command.size());
+                std::string c = command.substr(0, command.find(" "));
+                command = command.substr(command.find(" ") + 1, command.size());
                 int cid = std::stoi(c);
                 a = new MoveCustomer(idsrc, iddst, cid);
                 break;
             }
             case string_code::close: {
-                std::string idt=command.substr(0,command.find(" "));
-                command=command.substr(command.find(" ")+1,command.size());
+                std::string idt = command.substr(0, command.find(" "));
+                command = command.substr(command.find(" ") + 1, command.size());
                 int id = std::stoi(idt);
                 a = new Close(id);
                 break;
@@ -157,8 +156,8 @@ void Studio::start() {
                 a = new PrintWorkoutOptions();
                 break;
             case string_code::status: {
-                std::string idt=command.substr(0,command.find(" "));
-                command=command.substr(command.find(" ")+1,command.size());
+                std::string idt = command.substr(0, command.find(" "));
+                command = command.substr(command.find(" ") + 1, command.size());
                 int id = std::stoi(idt);
                 a = new PrintTrainerStatus(id);
                 break;
@@ -182,6 +181,7 @@ void Studio::start() {
     }
 
 }
+
 Customer *Studio::buildCustomer(std::string myCustomer) {
     std::string type;
     std::string CustomerName;
@@ -189,14 +189,14 @@ Customer *Studio::buildCustomer(std::string myCustomer) {
     CustomerName = myCustomer.substr(0, comma);
     type = myCustomer.substr(comma + 1, myCustomer.size());
 
-    Customer *c;
+    Customer* c;
     if (std::equal(type.begin(), type.end(), "swt")) {
         c = new SweatyCustomer(CustomerName, create_id());
     } else if (std::equal(type.begin(), type.end(), "chp")) {
         c = new CheapCustomer(CustomerName, create_id());
     } else if (std::equal(type.begin(), type.end(), "mcl")) {
         c = new HeavyMuscleCustomer(CustomerName, create_id());
-    } else
+    } else if (std::equal(type.begin(), type.end(), "fbd"))
         c = new FullBodyCustomer(CustomerName, create_id());
     return c;
 }
@@ -207,8 +207,9 @@ int Studio::getNumOfTrainers() const {
 
 Trainer *Studio::getTrainer(int tid) {
     for (int i = 0; i < trainers.size(); i++) {
-        if (trainers[i]->getId() == tid)
+        if (trainers[i]->getId() == tid) {
             return trainers[i];
+        }
     }
     return nullptr;
 }
@@ -231,8 +232,8 @@ Studio::~Studio() {
 }
 
 Studio::Studio(const Studio &other) : open(other.open) {
-    std::cout << "hello" << std::endl;
 
+    clear();
     for (int i = 0; i < other.trainers.size(); i++) {
         trainers.push_back(other.trainers[i]->clone());
     }
@@ -243,15 +244,18 @@ Studio::Studio(const Studio &other) : open(other.open) {
     for (int i = 0; i < other.workout_options.size(); i++) {
         workout_options.push_back(other.workout_options[i]);
     }
+
 }
 
 void Studio::operator=(const Studio &other) {
+    std::cout << "important!!" << std::endl;
     if (&other != this) {
+
         open = other.open;
+
         workout_options.clear();
-        for (int i = 0; i < other.workout_options.size(); i++) {
+        for (int i = 0; i < other.workout_options.size(); i++)
             workout_options.push_back(other.workout_options[i]);
-        }
 
         for (int i = 0; i < trainers.size(); i++)
             delete trainers[i];
@@ -264,6 +268,7 @@ void Studio::operator=(const Studio &other) {
         actionsLog.clear();
         for (int i = 0; i < other.actionsLog.size(); i++)
             actionsLog.push_back(other.actionsLog[i]->clone());
+        std::cout << "very important!!" << std::endl;
 
     }
 }
@@ -295,19 +300,20 @@ void Studio::clear() {
         delete actionsLog[i];
 }
 
-Studio::Studio(Studio &&other) :open(other.open), workout_options(other.workout_options),actionsLog(other.actionsLog),trainers(other.trainers){
+Studio::Studio(Studio &&other) : open(other.open), workout_options(other.workout_options), actionsLog(other.actionsLog),
+                                 trainers(other.trainers) {
     other.trainers.clear();
     other.workout_options.clear();
     other.actionsLog.clear();
 }
 
 Studio &Studio::operator=(Studio &&other) {
-    if(this!=&other){
+    if (this != &other) {
         clear();
-        open=other.open;
-        trainers=other.trainers;
-        workout_options=other.workout_options;
-        actionsLog=other.actionsLog;
+        open = other.open;
+        trainers = other.trainers;
+        workout_options = other.workout_options;
+        actionsLog = other.actionsLog;
     }
     return *this;
 }
