@@ -1,7 +1,7 @@
 //
 // Created by Shay on 10/11/2021.
 //
-#include "Customer.h"
+#include "../include/Customer.h"
 #include <algorithm>
 #include <string>
 #include <iostream>
@@ -122,11 +122,6 @@ std::vector<int> HeavyMuscleCustomer::order(const std::vector<Workout>& workout_
         if (workout_options[i].getType() == WorkoutType::ANAEROBIC)
             workout.push_back(workout_options[i]);
     }
-
-//    for(int i=0; i<workout.size(); i++){
-//        std::cout << workout[i].getType() << std::endl;
-//    }
-
     std::sort(workout.begin(), workout.end());
     while( workout.size()>0) {
         myWorkout.push_back(workout.back().getId());

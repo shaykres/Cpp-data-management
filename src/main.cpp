@@ -1,5 +1,5 @@
 
-#include "Studio.h"
+#include "../include/Studio.h"
 #include <iostream>
 
 Studio* backup = nullptr;

@@ -1,7 +1,7 @@
 //
 // Created by Shay on 10/11/2021.
 //
-#include "Studio.h"
+#include "../include/Studio.h"
 
 Studio::Studio() {
     open = true;

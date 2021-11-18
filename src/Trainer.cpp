@@ -1,7 +1,7 @@
 //
 // Created by Shay on 10/11/2021.
 //
-#include "Trainer.h"
+#include "../include/Trainer.h"
 
 Trainer::Trainer(int t_capacity) : capacity(t_capacity)
 {
@@ -200,7 +200,6 @@ void Trainer::addCustomerOrders(std::vector<OrderPair> CustomerOrders) {
         orderList.push_back(CustomerOrders[i]);
         updateSalary(CustomerOrders[i]);
     }
-
 }
 
 void Trainer::updateSalary(OrderPair pair) {

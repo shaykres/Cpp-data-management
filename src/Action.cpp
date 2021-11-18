@@ -1,7 +1,7 @@
 
 // Created by Shay on 10/11/2021.
 //
-#include "Action.h"
+#include "../include/Action.h"
 
 extern Studio* backup;
 
@@ -48,8 +48,6 @@ OpenTrainer::OpenTrainer(int id, std::vector<Customer*>& customersList):trainerI
 void OpenTrainer::act(Studio& studio)
 {
     Trainer* t = studio.getTrainer(trainerId);
-    if(t== nullptr)
-        std::cout <<"t is null" << std::endl;
     if (t == nullptr|| t->isOpen()){
         error( "Workout session does not exist or is already open");
     }
@@ -113,9 +111,9 @@ void Order::act(Studio& studio)
                 t->order(trainerCustomerl[i]->getId(), trainerCustomerl[i]->order(workout_options), workout_options);
             t->updateSalary();
         }
-    }
         t->printorderList();
         complete();
+    }
 }
 
 std::string Order::toString() const

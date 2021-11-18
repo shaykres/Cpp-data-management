@@ -1,7 +1,8 @@
 //
 // Created by Shay on 10/11/2021.
 //
-#include "Workout.h"
+#include <iostream>
+#include "../include/Workout.h"
 
 Workout::Workout(int w_id, std::string w_name, int w_price, WorkoutType w_type)
         :id(w_id), name(w_name), price(w_price),type(w_type)
@@ -53,7 +54,7 @@ Workout::Workout(const Workout& other):id(other.id), name(other.name), price(oth
 }
 
 bool Workout::operator<(const Workout &str) const {
-    return  (price < str.getPrice());
+     return  (price < str.getPrice());
 }
 
 void Workout::operator=(const Workout &str) {
