@@ -29,7 +29,7 @@ Customer::Customer(const Customer& other):id(other.id), name(other.name)
 }
 
 Customer::~Customer() {
-    std::cout << "customer distructor" << std::endl;
+   // std::cout << "customer distructor" << std::endl;
 }
 
 

@@ -137,9 +137,9 @@ Order::Order(const Order& other) :BaseAction(other), trainerId(other.trainerId)
 {
 }
 
-Order::~Order() {
-    std::cout << "order distructor" << std::endl;
-}
+//Order::~Order() {
+//    std::cout << "order distructor" << std::endl;
+//}
 
 MoveCustomer::MoveCustomer(int src, int dst, int customerId):srcTrainer(src), dstTrainer(dst), id(customerId)
 {
@@ -355,9 +355,9 @@ PrintActionsLog::PrintActionsLog(const PrintActionsLog& other):BaseAction(other)
 {
 }
 
-PrintActionsLog::~PrintActionsLog() {
-    std::cout << "log distructor" << std::endl;
-}
+//PrintActionsLog::~PrintActionsLog() {
+//    std::cout << "log distructor" << std::endl;
+//}
 
 BackupStudio::BackupStudio()
 {

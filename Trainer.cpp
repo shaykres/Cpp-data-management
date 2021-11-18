@@ -200,12 +200,16 @@ void Trainer::addCustomerOrders(std::vector<OrderPair> CustomerOrders) {
 
     for(int i=0; i<CustomerOrders.size(); i++){
         orderList.push_back(CustomerOrders[i]);
+        updateSalary(CustomerOrders[i]);
     }
-    updateSalary();
+
+}
+
+void Trainer::updateSalary(OrderPair pair) {
+    salary=salary+pair.second.getPrice();
 }
 
 void Trainer::updateSalary() {
-
     for(int i=0;i<orderList.size();i++){
         salary = salary + orderList[i].second.getPrice();
     }
