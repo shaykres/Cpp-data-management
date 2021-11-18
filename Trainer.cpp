@@ -80,9 +80,7 @@ void Trainer::order(const int customer_id, const std::vector<int> workout_ids, c
         while (workout_options[j].getId() != workout_ids[i])
             j++;
         orderList.push_back(OrderPair(customer_id, workout_options[j]));
-        std::cout<< getCustomer(customer_id)->getName()<<" Is Doing "<< workout_options[j].getName() << std::endl;
     }
-
 }
 
 void Trainer::openTrainer()
@@ -209,6 +207,11 @@ void Trainer::updateSalary() {
     for(int i=0;i<orderList.size();i++){
         salary = salary + orderList[i].second.getPrice();
     }
+}
+
+void Trainer::printorderList() {
+    for(int i=0;i<orderList.size();i++)
+        std::cout<< getCustomer(orderList[i].first)->getName()<<" Is Doing "<< orderList[i].second.getName() << std::endl;
 }
 
 

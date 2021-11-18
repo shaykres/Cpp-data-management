@@ -106,14 +106,16 @@ void Order::act(Studio& studio)
         error("Trainer does not exist or is not open");
     }
     else {
-        std::vector<Customer*> trainerCustomerl = t->getCustomers();
-        std::vector<Workout> workout_options = studio.getWorkoutOptions();
-        for (int i = 0; i < trainerCustomerl.size(); i++)
-            t->order(trainerCustomerl[i]->getId(), trainerCustomerl[i]->order(workout_options), workout_options);
-        complete();
-        t->updateSalary();
+        if (t->getOrders().empty()) {
+            std::vector<Customer *> trainerCustomerl = t->getCustomers();
+            std::vector<Workout> workout_options = studio.getWorkoutOptions();
+            for (int i = 0; i < trainerCustomerl.size(); i++)
+                t->order(trainerCustomerl[i]->getId(), trainerCustomerl[i]->order(workout_options), workout_options);
+            t->updateSalary();
+        }
     }
-
+        t->printorderList();
+        complete();
 }
 
 std::string Order::toString() const

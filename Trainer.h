@@ -37,6 +37,7 @@ public:
     std::vector<OrderPair> getCustomerOrder(int Customerid);
     void addCustomerOrders(std::vector<OrderPair> CustomerOrders);
     void updateSalary();
+    void printorderList();
 private:
     int id;
     int capacity;
